@@ -1,0 +1,36 @@
+# Description: docker compose file for core containers
+# Author: Leon Stigter <lstigter@gmail.com>
+# Last Updated: 2018-01-13
+#
+# run: docker-compose up -d 
+version: "3"
+services:
+
+  jenkins:
+    image: retgits/jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    restart: on-failure
+    container_name: jenkins
+    volumes:
+      - "$DOCKER_STORAGE/jenkins:/var/jenkins_home"
+  
+  gogs:
+    image: gogs/gogs
+    ports:
+      - "3000:3000"
+      - "10022:22"
+    restart: on-failure
+    container_name: gogs
+    volumes:
+      - "$DOCKER_STORAGE/gogs:/data"
+
+  nodejs-notebook:
+    image: retgits/nodejs-notebook
+    ports:
+      - "8888:8888"
+    restart: on-failure
+    container_name: nodejs-nodebook
+    volumes:
+      - "$DOCKER_STORAGE/jupyter:/home/jovyan/work"
