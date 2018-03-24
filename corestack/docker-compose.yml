@@ -31,6 +31,6 @@ services:
     ports:
       - "8888:8888"
     restart: on-failure
-    container_name: nodejs-nodebook
+    container_name: nodejs-notebook
     volumes:
       - "$DOCKER_STORAGE/jupyter:/home/jovyan/work"
