@@ -3,6 +3,12 @@
 #   -v $DOCKER_STORAGE/jenkins:/var/jenkins_home \
 #   --name=jenkins retgits/jenkins
 #
+# docker build . -t retgits/jupyter
+# 
+# To update the image run
+# docker stop jenkins && docker rm jenkins 
+# docker rmi retgits/jenkins && docker rmi jenkins/jenkins
+# docker build . -t retgits/jenkins
 
 FROM jenkins/jenkins
 LABEL maintainer "retgits"

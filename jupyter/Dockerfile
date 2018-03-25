@@ -3,6 +3,8 @@
 # -v $DOCKER_STORAGE/jupyter:/home/jovyan/work \
 # retgits/nodejs-notebook
 #
+# docker build . -t retgits/jenkins
+
 FROM jupyter/minimal-notebook
 LABEL maintainer "retgits"
 
