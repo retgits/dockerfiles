@@ -11,26 +11,41 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
-    restart: on-failure
     container_name: jenkins
     volumes:
       - "$DOCKER_STORAGE/jenkins:/var/jenkins_home"
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
   
   gogs:
     image: gogs/gogs
     ports:
       - "3000:3000"
       - "10022:22"
-    restart: on-failure
     container_name: gogs
     volumes:
       - "$DOCKER_STORAGE/gogs:/data"
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
 
   nodejs-notebook:
     image: retgits/nodejs-notebook
     ports:
       - "8888:8888"
-    restart: on-failure
     container_name: nodejs-notebook
     volumes:
       - "$DOCKER_STORAGE/jupyter:/home/jovyan/work"
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
