@@ -26,11 +26,11 @@ services:
       - "$DOCKER_STORAGE/gogs:/data"
     restart: always
 
-  nodejs-notebook:
-    image: retgits/nodejs-notebook
+  go-notebook:
+    image: retgits/go-notebook
     ports:
       - "8888:8888"
-    container_name: nodejs-notebook
+    container_name: go-notebook
     volumes:
-      - "$DOCKER_STORAGE/jupyter:/home/jovyan/work"
+      - "$DOCKER_STORAGE/jupyter:/home/gopher/work"
     restart: always
