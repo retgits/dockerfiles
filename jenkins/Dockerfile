@@ -13,13 +13,28 @@
 FROM jenkins/jenkins
 LABEL maintainer "retgits"
 
+# Environment settings
+ENV GO_VERSION 1.10.1
+ENV GO_LOCATION /usr/local
+
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
 # Switch to root to install packages
 USER root
-RUN curl -sL https://deb.nodesource.com/setup_9.x | bash - \
+
+# Install Node.js, Go and dep
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH" \
+    && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
     && apt-get update \
     && apt-get install nodejs -y zip \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && wget https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
+    && tar -C $GO_LOCATION -xzf go$GO_VERSION.linux-amd64.tar.gz \
+    && rm go$GO_VERSION.linux-amd64.tar.gz \
+    && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
+    && npm install -g serverless
 
 # drop back to the regular jenkins user - good practice
 USER jenkins
