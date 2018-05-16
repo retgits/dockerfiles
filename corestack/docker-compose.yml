@@ -1,6 +1,6 @@
 # Description: docker compose file for core containers
 # Author: Leon Stigter <lstigter@gmail.com>
-# Last Updated: 2018-01-13
+# Last Updated: 2018-05-15
 #
 # run: docker-compose up -d 
 version: "3"
@@ -33,4 +33,11 @@ services:
     container_name: go-notebook
     volumes:
       - "$DOCKER_STORAGE/jupyter:/home/gopher/work"
+    restart: always
+
+  nginx:
+    image: retgits/nginx
+    ports:
+      - "8889:80"
+    container_name: nginx
     restart: always
