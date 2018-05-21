@@ -27,14 +27,17 @@ USER root
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH" \
     && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
     && apt-get update \
-    && apt-get install nodejs -y zip \
+    && apt-get install nodejs jq python-pip -y zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && wget https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
     && tar -C $GO_LOCATION -xzf go$GO_VERSION.linux-amd64.tar.gz \
     && rm go$GO_VERSION.linux-amd64.tar.gz \
     && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
-    && npm install -g serverless
+    && npm install -g serverless \
+    && go get -u github.com/mikefarah/yq \
+    && pip install awscli --upgrade \
+    && pip install aws-sam-cli
 
 # drop back to the regular jenkins user - good practice
 USER jenkins
