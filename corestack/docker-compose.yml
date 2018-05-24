@@ -34,10 +34,3 @@ services:
     volumes:
       - "$DOCKER_STORAGE/jupyter:/home/gopher/work"
     restart: always
-
-  nginx:
-    image: retgits/nginx
-    ports:
-      - "8889:80"
-    container_name: nginx
-    restart: always
