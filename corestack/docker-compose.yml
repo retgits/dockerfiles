@@ -1,8 +1,9 @@
 # Description: docker compose file for core containers
 # Author: Leon Stigter <lstigter@gmail.com>
-# Last Updated: 2018-05-15
+# Last Updated: 2018-06-09
 #
 # run: docker-compose up -d 
+#
 version: "3"
 services:
 
@@ -15,6 +16,19 @@ services:
     volumes:
       - "$DOCKER_STORAGE/jenkins:/var/jenkins_home"
     restart: always
+
+  sqsreceiver
+    image: retgits/sqsreceiver
+    container_name: sqsreceiver
+    restart: always
+    environment:
+      - QUEUE=${QUEUE}
+      - AWSACCESSKEYID=${AWSACCESSKEYID}
+      - AWSSECRETACCESSKEY=${AWSSECRETACCESSKEY}
+      - AWSREGION=${AWSREGION}
+      - JENKINSUSER=${JENKINSUSER}
+      - JENKINSTOKEN=${JENKINSTOKEN}
+      - JENKINSSERVER='http://jenkins:8080'
   
   gogs:
     image: gogs/gogs
