@@ -17,10 +17,11 @@ services:
       - "$DOCKER_STORAGE/jenkins:/var/jenkins_home"
     restart: always
 
-  sqsreceiver
+  sqsreceiver:
     image: retgits/sqsreceiver
     container_name: sqsreceiver
     restart: always
+    env_file: .env
     environment:
       - QUEUE=${QUEUE}
       - AWSACCESSKEYID=${AWSACCESSKEYID}
@@ -28,7 +29,7 @@ services:
       - AWSREGION=${AWSREGION}
       - JENKINSUSER=${JENKINSUSER}
       - JENKINSTOKEN=${JENKINSTOKEN}
-      - JENKINSSERVER='http://jenkins:8080'
+      - JENKINSSERVER=http://jenkins:8080
   
   gogs:
     image: gogs/gogs
