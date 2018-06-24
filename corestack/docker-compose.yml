@@ -1,10 +1,10 @@
 # Description: docker compose file for core containers
 # Author: Leon Stigter <lstigter@gmail.com>
-# Last Updated: 2018-06-09
+# Last Updated: 2018-06-24
 #
 # run: docker-compose up -d 
 #
-version: "3"
+version: "2.2"
 services:
 
   jenkins:
@@ -16,6 +16,22 @@ services:
     volumes:
       - "$DOCKER_STORAGE/jenkins:/var/jenkins_home"
     restart: always
+
+  gitlab:
+    image: gitlab/gitlab-ce:11.0.0-ce.0
+    container_name: gitlab
+    restart: always
+    env_file: .env
+    environment:
+      - GITLAB_OMNIBUS_CONFIG=${GITLAB_EXT_URL}
+    ports:
+      - "443:443"
+      - "8181:8181"
+      - "8822:8822"
+    volumes:
+      - "$DOCKER_STORAGE/gitlab/config:/etc/gitlab"
+      - "$DOCKER_STORAGE/gitlab/logs:/var/log/gitlab"
+      - "$DOCKER_STORAGE/gitlab/data:/var/opt/gitlab"
 
   sqsreceiver:
     image: retgits/sqsreceiver
@@ -30,6 +46,8 @@ services:
       - JENKINSUSER=${JENKINSUSER}
       - JENKINSTOKEN=${JENKINSTOKEN}
       - JENKINSSERVER=http://jenkins:8080
+    cpus: 0.05
+    mem_limit: 25m
   
   gogs:
     image: gogs/gogs
