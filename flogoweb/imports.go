@@ -16,7 +16,8 @@ import (
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/counter"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/error"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/gpio"
-	_ "github.com/TIBCOSoftware/flogo-contrib/activity/inference"
+
+	//_ "github.com/TIBCOSoftware/flogo-contrib/activity/inference"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/kafkapub"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/lambda"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/log"
