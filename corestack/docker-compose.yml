@@ -16,38 +16,6 @@ services:
     volumes:
       - "$DOCKER_STORAGE/jenkins:/var/jenkins_home"
     restart: always
-
-  gitlab:
-    image: gitlab/gitlab-ce:11.0.0-ce.0
-    container_name: gitlab
-    restart: always
-    env_file: .env
-    environment:
-      - GITLAB_OMNIBUS_CONFIG=${GITLAB_EXT_URL}
-    ports:
-      - "443:443"
-      - "8181:8181"
-      - "8822:8822"
-    volumes:
-      - "$DOCKER_STORAGE/gitlab/config:/etc/gitlab"
-      - "$DOCKER_STORAGE/gitlab/logs:/var/log/gitlab"
-      - "$DOCKER_STORAGE/gitlab/data:/var/opt/gitlab"
-
-  sqsreceiver:
-    image: retgits/sqsreceiver
-    container_name: sqsreceiver
-    restart: always
-    env_file: .env
-    environment:
-      - QUEUE=${QUEUE}
-      - AWSACCESSKEYID=${AWSACCESSKEYID}
-      - AWSSECRETACCESSKEY=${AWSSECRETACCESSKEY}
-      - AWSREGION=${AWSREGION}
-      - JENKINSUSER=${JENKINSUSER}
-      - JENKINSTOKEN=${JENKINSTOKEN}
-      - JENKINSSERVER=http://jenkins:8080
-    cpus: 0.05
-    mem_limit: 25m
   
   gogs:
     image: gogs/gogs
@@ -57,13 +25,4 @@ services:
     container_name: gogs
     volumes:
       - "$DOCKER_STORAGE/gogs:/data"
-    restart: always
-
-  go-notebook:
-    image: retgits/go-notebook
-    ports:
-      - "8888:8888"
-    container_name: go-notebook
-    volumes:
-      - "$DOCKER_STORAGE/jupyter:/home/gopher/work"
     restart: always

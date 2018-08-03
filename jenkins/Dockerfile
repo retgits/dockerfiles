@@ -3,7 +3,7 @@
 #   -v $DOCKER_STORAGE/jenkins:/var/jenkins_home \
 #   --name=jenkins retgits/jenkins
 #
-# docker build . -t retgits/jupyter
+# docker build . -t retgits/jenkins
 # 
 # To update the image run
 # docker stop jenkins && docker rm jenkins 
@@ -14,7 +14,7 @@ FROM jenkins/jenkins
 LABEL maintainer "retgits"
 
 # Environment settings
-ENV GO_VERSION 1.10.1
+ENV GO_VERSION 1.10.3
 ENV GO_LOCATION /usr/local
 
 ENV GOPATH /go
