@@ -26,3 +26,10 @@ services:
     volumes:
       - "$DOCKER_STORAGE/gogs:/data"
     restart: always
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "5000:3000"
+    container_name: grafana
+    restart: always
