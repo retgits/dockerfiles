@@ -11,13 +11,13 @@ import (
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/app"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/awsiot"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/awssns"
+	_ "github.com/TIBCOSoftware/flogo-contrib/activity/channel"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/coap"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/couchbase"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/counter"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/error"
+	_ "github.com/TIBCOSoftware/flogo-contrib/activity/filter"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/gpio"
-
-	//_ "github.com/TIBCOSoftware/flogo-contrib/activity/inference"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/kafkapub"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/lambda"
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/log"
@@ -29,6 +29,7 @@ import (
 	_ "github.com/TIBCOSoftware/flogo-contrib/activity/wsmessage"
 
 	// Triggers from https://github.com/TIBCOSoftware/flogo-contrib
+	_ "github.com/TIBCOSoftware/flogo-contrib/activity/channel"
 	_ "github.com/TIBCOSoftware/flogo-contrib/trigger/cli"
 	_ "github.com/TIBCOSoftware/flogo-contrib/trigger/coap"
 	_ "github.com/TIBCOSoftware/flogo-contrib/trigger/kafkasub"
@@ -46,18 +47,22 @@ import (
 	_ "github.com/retgits/flogo-components/activity/downloadfile"
 	_ "github.com/retgits/flogo-components/activity/dynamodbinsert"
 	_ "github.com/retgits/flogo-components/activity/dynamodbquery"
+	_ "github.com/retgits/flogo-components/activity/envkey"
 	_ "github.com/retgits/flogo-components/activity/githubissues"
 	_ "github.com/retgits/flogo-components/activity/gzip"
 	_ "github.com/retgits/flogo-components/activity/iftttwebhook"
+	_ "github.com/retgits/flogo-components/activity/mashtoken"
 	_ "github.com/retgits/flogo-components/activity/null"
 	_ "github.com/retgits/flogo-components/activity/pubnubpublisher"
 	_ "github.com/retgits/flogo-components/activity/queryparser"
 	_ "github.com/retgits/flogo-components/activity/randomnumber"
 	_ "github.com/retgits/flogo-components/activity/randomstring"
+	_ "github.com/retgits/flogo-components/activity/readfile"
 	_ "github.com/retgits/flogo-components/activity/tomlreader"
 	_ "github.com/retgits/flogo-components/activity/trellocard"
 	_ "github.com/retgits/flogo-components/activity/writetofile"
 
 	// Triggers from https://github.com/retgits/flogo-components
 	_ "github.com/retgits/flogo-components/trigger/pubnubsubscriber"
+	_ "github.com/retgits/flogo-components/trigger/grpctrigger"
 )
