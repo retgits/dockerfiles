@@ -1,0 +1,31 @@
+# Description: Enables the Kubernetes Dashboard on Docker for Desktop as a service to make it accessible outside the Kubernetes cluster 
+# Author: retgits
+# Last Ukubenpdated: 2018-10-23
+# 
+# Deploy the dashboard
+#   kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+# Make sure it is running
+#   kubectl get pod --namespace=kube-system | grep dashboard
+# Deploy the service
+#   kubectl apply -f kubernetes-dashboard-service.yml
+# Make sure the service is created correctly
+#   kubectl get service --namespace=kube-system | grep kubernetes-dashboard-nodeport
+# Open the URL
+#   open https://localhost:30000
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard-nodeport
+  namespace: kube-system
+spec:
+  ports:
+  - port: 8443
+    protocol: TCP
+    targetPort: 8443
+    nodePort: 30000
+  selector:
+    k8s-app: kubernetes-dashboard
+  sessionAffinity: None
+  type: NodePort

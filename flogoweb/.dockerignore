@@ -1,0 +1,5 @@
+# Kubernetes deployment file
+flogoweb.yml
+
+# Make
+Makefile

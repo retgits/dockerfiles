@@ -1,0 +1,59 @@
+# Description: Creates a deployment and service for the Flogo Web UI
+# Author: retgits
+# Last Updated: 2018-10-24
+# 
+# Deploy Flogo Web
+#   kubectl apply -f flogoweb.yml
+# Make sure the service is created correctly
+#   kubectl get service | grep flogoweb
+# Open the URL
+#   open https://localhost:31234
+---
+#--- Flogo Web UI Deployment ---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: flogoweb
+  name: flogoweb
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: flogoweb
+  template:
+    metadata:
+      labels:
+        run: flogoweb
+    spec:
+      volumes:
+      - name: flogo-data-volume
+        hostPath:
+          path: /Users/lstigter/storage/flogo
+      containers:
+      - name: flogoweb
+        image: flogo/flogo-docker:latest
+        volumeMounts:
+        - mountPath: /tmp/flogo-web/build/server/local/
+          name: flogo-data-volume
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3303
+        args:
+        - eula-accept
+---
+#--- Flogo Web UI Service ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flogoweb
+  labels:
+    app: flogoweb
+spec:
+  type: NodePort
+  ports:
+    - port: 3303
+      nodePort: 31234
+  selector:
+    run: flogoweb
