@@ -14,7 +14,7 @@ FROM jenkins/jenkins
 LABEL maintainer "retgits"
 
 # Environment settings
-ENV GO_VERSION 1.10.3
+ENV GO_VERSION 1.11.2
 ENV GO_LOCATION /usr/local
 
 ENV GOPATH /go
@@ -35,9 +35,7 @@ RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH" \
     && rm go$GO_VERSION.linux-amd64.tar.gz \
     && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
     && npm install -g serverless \
-    && go get -u github.com/mikefarah/yq \
-    && pip install awscli --upgrade \
-    && pip install aws-sam-cli
+    && go get -u github.com/mikefarah/yq 
 
 # drop back to the regular jenkins user - good practice
 USER jenkins
