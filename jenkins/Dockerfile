@@ -14,7 +14,7 @@ FROM jenkins/jenkins
 LABEL maintainer "retgits"
 
 # Environment settings
-ENV GO_VERSION 1.11.2
+ENV GO_VERSION 1.11.4
 ENV GO_LOCATION /usr/local
 
 ENV GOPATH /go
