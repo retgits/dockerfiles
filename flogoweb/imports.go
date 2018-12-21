@@ -70,5 +70,6 @@ import (
 
 	// Triggers from https://github.com/retgits/flogo-components
 	_ "github.com/retgits/flogo-components/trigger/grpctrigger"
+	_ "github.com/retgits/flogo-components/trigger/openfaas"
 	_ "github.com/retgits/flogo-components/trigger/pubnubsubscriber"
 )
