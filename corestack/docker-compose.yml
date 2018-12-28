@@ -51,17 +51,6 @@ services:
     restart: always
     networks: 
       - devrel
-  nuclio:
-    image: nuclio/dashboard:stable-amd64
-    ports:
-      - "8070:8070"
-    container_name: nuclio
-    volumes: 
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "$STORAGE_HOME/nuclio:/data"
-    restart: always
-    networks: 
-      - devrel
 networks:
   devrel:
     driver: bridge
