@@ -27,7 +27,7 @@ USER root
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH" \
     && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
     && apt-get update \
-    && apt-get install nodejs jq python-pip -y zip \
+    && apt-get install nodejs jq python-pip docker.io zip -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && wget https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
