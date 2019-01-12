@@ -1,6 +1,6 @@
 # Description: Makefile for Jenkins
 # Author: retgits
-# Last Updated: 2018-10-24
+# Last Updated: 2019-01-12
 
 #--- Help ---
 .PHONY: help
@@ -24,3 +24,7 @@ build: ## Build a new docker container based on jenkins/jenkins:latest
 .PHONY: run
 run: ## Run a container
 	docker run -d -p 8080:8080 -p 50000:50000 -v $(DOCKER_STORAGE)/jenkins:/var/jenkins_home --name=jenkins retgits/jenkins
+
+.PHONY: runint
+runint: ## Run a container in interactive mode
+	docker run --rm -it -p 8080:8080 -p 50000:50000 -v /var/run/docker.sock:/var/run/docker.sock -v $(DOCKER_STORAGE)/jenkins:/var/jenkins_home --name=jenkins retgits/jenkins
