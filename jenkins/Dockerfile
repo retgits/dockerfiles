@@ -19,6 +19,7 @@ ENV GO_VERSION 1.11.4
 ENV GO_LOCATION /usr/local
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+ENV JENKINS_OPTS="--prefix=/jenkins"
 
 # Switch to root to install packages
 USER root
