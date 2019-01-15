@@ -3,7 +3,7 @@ services:
   gogs:
     image: gogs/gogs
     ports:
-      - "80:3000"
+      - "3000:3000"
       - "10022:22"
     container_name: gogs
     volumes:
@@ -48,6 +48,7 @@ services:
     container_name: jenkins
     volumes:
       - "$STORAGE_HOME/jenkins:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     restart: always
     networks: 
       - devrel
