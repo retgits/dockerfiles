@@ -1,0 +1,157 @@
+# Create a service to access Vault. It will be configured using the NodePort
+# This opens the port on all the Nodes, and any traffic is forwarded to the 
+# service.
+apiVersion: v1
+kind: Service
+metadata:
+  name: "vault-ui"
+spec:
+  type: NodePort
+  ports:
+    - name: "ui"
+      port: 8200
+      protocol: TCP
+  selector:
+    app: vault
+    role: server
+---
+# Create a service to access Vault. It will be configured using the default
+# setting clusterIP. It makes the service available inside the cluster to 
+# other apps, but there is no external access.
+apiVersion: v1
+kind: Service
+metadata:
+  name: "vault"
+spec:
+  ports:
+    - name: "api"
+      port: 8200
+  clusterIP: None
+  selector:
+    app: vault
+    role: server
+---
+# Create a config map to hold the configuration for the pod. It is created 
+# using defaults inspired by the vault deployment guide and a blog post on
+# Medium: https://www.melvinvivas.com/secrets-management-using-docker-hashicorp-vault/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-local-config
+data:
+  local.config: |
+    {
+      "ui": true,
+      "listener": [{
+        "tcp": {
+          "address": "0.0.0.0:8200",
+          "tls_disable": true
+        }
+      }],
+      "storage": [{
+        "file": {
+          "path" : "/vault/data"
+        }
+      }],
+      "max_lease_ttl": "10h",
+      "default_lease_ttl": "10h"
+    }
+---
+# Create a deployment of the Vault container
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: vault
+  labels:
+    app: vault
+    role: server
+spec:
+  serviceName: vault
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault
+      role: server
+  template:
+    metadata:
+      labels:
+        app: vault
+        role: server
+    spec:
+      volumes:
+      - name: vault-data
+        persistentVolumeClaim:
+          claimName: vault-storage
+      containers:
+      - name: vault
+        image: vault
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+            add: [ "IPC_LOCK" ]
+        volumeMounts:
+          - mountPath: /vault/data
+            name: vault-data
+        env:
+        - name: VAULT_LOCAL_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: vault-local-config
+              key: local.config
+        args: [ "server" ]
+        livenessProbe:
+          exec:
+            command:
+            - pidof
+            - vault
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+        ports:
+        - containerPort: 8200
+          name: api
+# After this run
+# $ kubectl get pods
+# NAME      READY     STATUS    RESTARTS   AGE
+# vault-0   1/1       Running   0          42s
+# Initialize vault to get the unseal keys and root token using
+# $ kubectl exec -ti vault-0 -c vault -- /bin/sh -c 'VAULT_ADDR=http://localhost:8200 vault operator init'
+# Subsequently run the below command with the unseal keys to unseal vault
+# $ kubectl exec -ti vault-0 -c vault -- /bin/sh -c 'VAULT_ADDR=http://localhost:8200 vault operator unseal <key>'
+---
+# Create an ingress route based on
+# nginx-ingress. It should forward
+# all requests to /ui and /v1 to
+# the vault container
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vault-ingress
+spec:
+  rules:
+  - host: vault.ubudevrel.local
+    http:
+      paths:
+        - path: /ui
+          backend:
+            serviceName: vault
+            servicePort: 8200
+        - path: /v1
+          backend:
+            serviceName: vault
+            servicePort: 8200
+---
+# Create a Persistent Volume Claim called
+# vault-storage with a one gigabyte size limit
+# mountable on one Kubernetes node using the
+# hostpath storageclass
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: vault-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard

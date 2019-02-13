@@ -1,0 +1,13 @@
+# Create a new jumppod based on Alpine Linux
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jumppod
+spec:
+  containers:
+  - name: container
+    image: "alpine:3.9"
+    command: [ "bin/sh", "-c", "sleep 10000" ]
+  restartPolicy: Never
+# You can access the jumppod by running
+# $ kubectl exec -ti jumppod -c container -- /bin/sh

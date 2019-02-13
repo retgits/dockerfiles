@@ -2,27 +2,43 @@
 
 ![party](./docker-party.jpeg)
 
-A collection of opinionated dockerfiles, Kubernetes YAML files, and scripts that I use.
+## Docker
 
-| Folder               | Contains                                                                                     |
-|----------------------|----------------------------------------------------------------------------------------------|
-| apiscout             | Kubernetes YAML to deploy [APIScout](https://tibcosoftware.github.com/apiscout)              |
-| corestack            | docker-compose file to work with my corestack of tools                                       |
-| flogoweb             | Kubernetes YAML to deploy [Flogo Web](http://flogo.io) and Makefile to build a new container |
-| gogs                 | Kubernetes YAML to deploy [Gogs](https://gogs.io)                                            |
-| jenkins              | Makefile to build a new Jenkins container                                                    |
-| kubernetes-dashboard | Kubernetes YAML to deploy [Kubernetes Dashboard](https://github.com/kubernetes/dashboard)    |
-| openfaas-ec2         | Shell script to run [OpenFaaS](https://www.openfaas.com/) in Minikube on EC2                 |
+| Folder               | Contains                                                                                                                   |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------|
+| flogoweb             | Kubernetes YAML to deploy [Flogo Web](http://flogo.io) and Makefile to build a new container                               |
+| goc                  | Dockerfile to create the image for the [GoCenter GitHub Action](https://github.com/retgits/actions/tree/master/gocenter)   |
+| jenkins              | Makefile to build a new Jenkins container                                                                                  |
+| jfrog-cli            | Dockerfile to create the image for the [JFrog-CLI GitHub Action](https://github.com/retgits/actions/tree/master/jfrog-cli) |
+| nginx-proxy          | Dockerfile to create a simple nginx container that can serve as a reverse proxy                                            |
 
-## Corestack
+## Kubernetes
 
-Currently my corestack consists of:
+The Kubernetes folder has a `Makefile` that contains a bunch of actions I use to set up my Minikube and testing clusters
 
-* [Gogs](https://gogs.io)
-* [Drone](https://drone.io)
-* [Artifactory](https://www.jfrog.com/artifactory/)
-* [Jenkins](https://jenkins.io/)
-* [Nuclio](https://nuclio.io)
+| Makefile targets  | Description                                                                     |
+|-------------------|---------------------------------------------------------------------------------|
+| apiscout-deploy   | Deploy [APIScout](https://tibcosoftware.github.com/apiscout) to Kubernetes      |
+| apiscout-undeploy | Remove [APIScout](https://tibcosoftware.github.com/apiscout) from Kubernetes    |
+| dashboard-deploy  | Deploy the Kubernetes Dashboard (using Helm)                                    |
+| dashboard-undeploy| Remove the Kubernetes Dashboard (using Helm)                                    |
+| gogs-deploy       | Deploy Gogs to Kubernetes                                                       |
+| gogs-pull         | Pull a version of Gogs from Docker Hub (make pull TAG=latest)                   |
+| gogs-undeploy     | Remove Gogs from Kubernetes                                                     |
+| help              | Displays the help for each target (this message)                                |
+| jumppod-deploy    | Deploy jumppod to Kubernetes                                                    |
+| jumppod-pull      | Pull version 3.9 of Alpine from Docker Hub                                      |
+| jumppod-undeploy  | Remove jumppod from Kubernetes                                                  |
+| minikube-delete   | Remove Minikube completely from the host system (including kubectl)             |
+| minikube-ingress  | Set up ingress for Minikube based on nginx                                      |
+| minikube-install  | Install Minikube                                                                |
+| minikube-start    | Start Minikube                                                                  |
+| minikube-stop     | Stop Minikube                                                                   |
+| openfaas-deploy   | Deploy OpenFaaS to Kubernetes (make openfaas-deploy PW=mypassword) (using Helm) |
+| openfaas-undeploy | Remove OpenFaaS from Kubernetes (using Helm)                                    |
+| vault-deploy      | Deploy Vault to Kubernetes                                                      |
+| vault-pull        | Pull a version of Vault from Docker Hub (make pull TAG=latest)                  |
+| vault-undeploy    | Remove Vault from Kubernetes                                                    |
 
 ## License
 

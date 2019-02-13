@@ -1,0 +1,110 @@
+# Create a service to access Gogs. It will be configured using the NodePort
+# This opens the port on all the Nodes, and any traffic is forwarded to the 
+# service.
+apiVersion: v1
+kind: Service
+metadata:
+  name: gogs-ui
+spec:
+  type: NodePort
+  ports:
+  - name: ssh
+    protocol: TCP
+    port: 22
+    nodePort: 30022
+  - name: http
+    protocol: TCP
+    port: 3000
+    nodePort: 30009
+  selector:
+    app: gogs
+    role: server
+---
+# Create a service to access Gogs. It will be configured using the default
+# setting clusterIP. It makes the service available inside the cluster to 
+# other apps, but there is no external access.
+apiVersion: v1
+kind: Service
+metadata:
+  name: "gogs"
+spec:
+  ports:
+    - name: "ui"
+      port: 3000
+    - name: "ssh"
+      port: 22
+  clusterIP: None
+  selector:
+    app: gogs
+    role: server
+---
+# Create a deployment of the Gogs container
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: gogs
+  labels:
+    app: gogs
+    role: server
+spec:
+  serviceName: gogs
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gogs
+      role: server
+  template:
+    metadata:
+      labels:
+        app: gogs
+        role: server
+    spec:
+      volumes:
+      - name: gogs-data
+        persistentVolumeClaim:
+          claimName: gogs-storage
+      containers:
+      - name: gogs
+        image: gogs/gogs
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /data
+            name: gogs-data
+        ports:
+        - containerPort: 22
+          name: ssh
+        - containerPort: 3000
+          name: http
+---
+# Create a Persistent Volume Claim called
+# gogs-storage with a fifty gigabyte size
+# limit mountable on one Kubernetes node
+# using the hostpath storageclass
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: gogs-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: standard
+---
+# Create an ingress route based on
+# nginx-ingress. It should forward
+# all requests to the gogs container
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gogs-ingress
+spec:
+  rules:
+  - host: gogs.ubudevrel.local
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: gogs
+            servicePort: 3000
