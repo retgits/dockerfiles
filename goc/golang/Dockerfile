@@ -1,5 +1,5 @@
 # Build
-# docker build . -t retgits/goc:1.0.2
+# docker build . -t retgits/goc:1.0.3
 
 FROM golang:alpine as builder
 

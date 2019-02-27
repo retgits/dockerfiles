@@ -1,5 +1,5 @@
 # Build
-# docker build . -t retgits/jfrog-cli:1.23.2-alpine
+# docker build . -t retgits/jfrog-cli:1.24.2-alpine
 
 FROM golang:alpine as builder
 
