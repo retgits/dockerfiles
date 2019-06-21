@@ -1,5 +1,5 @@
 # Build
-# docker build . -t retgits/jfrog-cli:1.25.0-alpine
+# docker build . -t retgits/jfrog-cli:1.26.0-alpine
 
 FROM golang:alpine as builder
 
@@ -8,9 +8,8 @@ RUN apk add --no-cache curl wget git alpine-sdk \
     && git clone https://github.com/jfrog/jfrog-cli-go \
     && cd jfrog-cli-go \
     && go get ./... \
-    && cd jfrog-cli/jfrog \
-    && CGO_ENABLED=0 go build
+    && CGO_ENABLED=0 go build -o jfrog
 
 FROM alpine:3.9
-COPY --from=builder /root/jfrog-cli-go/jfrog-cli/jfrog/jfrog /bin
+COPY --from=builder /root/jfrog-cli-go/jfrog /bin
 RUN apk add --no-cache curl wget git ca-certificates

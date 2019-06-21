@@ -5,7 +5,7 @@
 # Last Updated: 2019-04-21
 
 # Set the current and new version
-CURR=1.25.0
+CURR=1.26.0
 NEW=$1
 
 # Loop over the images and build new ones
